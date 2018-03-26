@@ -151,3 +151,83 @@ $req->execute(array(
 - Delete : Suppression d'une ou plusieurs entrées
 
 - Where (filtre) / order by (tri) / limit (limiations) : Affiner ses requêtes.
+
+## Les transactions :
+
+```
+public bool **PDO::beginTransaction** ( void )
+```
+Désactive le mode autocommit, c'est à dire que les modifications faites sur la BDD via PDO ne seront pas appliquées tant que l'on ne met pas la fin de la transaction avec commit();
+
+MYSQL exécute automatiquement un commit lorsqu'une requête de type DROP TABLE ou CREATE TABLE est exécutée dans une transaction. Un COMMIT empêche de revenir en arrière.
+
+Par la même occasion, la fonction rollback(); permet d'annuler toutes les modifications et remet en mode autocommit.
+
+**Les moteurs de stockage de MySQL**
+
+Dans une base de données, on peut avoir plusieurs moteurs de stockages.
+
+- Mylsam 
+	- est le moteur par défaut de MySQL
+	- très simple d'utilisation & très bonnes performances
+	-  index FULL-TEXT (recherches faciles) comme "LIKE"
+
+MAIS
+
+Souffre sur les grosses tables, sa configuration (taille des mots) n'est accéssible que un serveur dédién ne supporte NI les clefs étrangères, ni les transactions.
+
+- InnoDB :
+	- Supporte les transactions
+	- Le plus utilisé dans les secteurs sensibles (finances, jeux en ligne, architecture complexe...)
+	- Gestion des clés étrangères
+
+MAIS
+
+Tables plus volumineuses, ne pas proposer d'index FULL-TEXT, légèrement plus lent.
+
+- Memory (Headp): tout dans la RAM
+
+- Stocke toutes ses tables dans la mémoire / strucure quand fichier
+- Rapide d'accès
+- Utile pour tables très sollicités
+- Si arrêt serveur ⇒ Tout arrêter
+- Utile pour compteur de visiteurs, système de chats...
+
+**Comment choisir son moteur ?**
+
+Lors de la création de la table, il faut mettre : 
+```
+CREATE TABLE compte
+(
+    -- liste des champs
+)
+ENGINE = InnoDB;
+```
+
+**Faire une transaction en SQL:**
+
+```
+-- on désactive l'autocommit, pour empêcher toutes les requêtes individuelles comme transaction.
+SET autocommit = 0;
+-- on lance la transaction
+START TRANSACTION;
+-- on effectue cette simple requête sur notre table compte
+UPDATE compte SET montant = montant + 20000 WHERE nom = 'vendeur';
+-- on valide la transact
+COMMIT;
+ou
+
+-- cette requête retourne une erreur
+UPDATE compte SET montant = montant - 20000 WHERE nom = 'machin';
+-- on annule donc la transaction
+ROLLBACK ;
+````
+
+
+**Faire une transaction en PHP:**
+
+https://openclassrooms.com/courses/les-transactions-avec-mysql-et-pdo
+
+
+
+
