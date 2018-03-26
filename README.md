@@ -56,13 +56,14 @@ Généralisation :
 
 
 ## Plan d’action :
-    Etude >
-    
+
+**Etudier :**
+
 - PDO + concurrents
         - SQL
         - Types de requêtes BDD
         - Types d’attaques et défenses possibles
 
-    Réalisation >
-    
+**Réalisation: **   
+
 - WS
