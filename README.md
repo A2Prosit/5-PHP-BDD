@@ -82,7 +82,7 @@ L'avantage de PDO :
 ![](https://user.oc-static.com/files/219001_220000/219973.png)
 
 Se connecter à la base de données :
- ```
+ ``` PHP
  try{
 $bdd = new PDO('mysql:host=' ';dbname=' ';charset=utf8', 'login', 'password');
 }
@@ -93,7 +93,7 @@ catch (Exception $e)
 ```
 mysql s'appelle le DSN : **D**ata **S**ource **N**ame - C'est celui qui change en fonction du type de BDD on se connecte.
 
-```
+``` PHP
 // Faire une requête SQL
 $reponse = $bdd->query('SELECT nom FROM jeux_video');
 
@@ -109,30 +109,30 @@ Après chaque requête, il faut fermer les recherches avec "`closeCursor()`".
 - Beaucoup plus sûres et plus rapides, si la requête est exécutée plusieurs fois.
 - On peut lui passer des arguments à tout moment :
 
-```
+``` PHP
 $req = $bdd->prepare('SELECT nom FROM jeux_video WHERE possesseur = ?');
 $req->execute(array($_GET['possesseur']));
 ```
 
 **Activer les détails sur des erreurs lors de requêtes**
 - Si on fais des erreurs sur la connexion de la BDD, on peut mettre cette ligne sous la connexion pour plus d'infos : 
-```
+``` PHP
 array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 ```
 - Même principe sur les requêtes : 
- ```
+ ``` PHP
 $reponse = $bdd->query('SELECT nom FROM jeux_video') or die(print_r($bdd->errorInfo()));
 ```
 
 ## Écrire les données :
 
 **Insetion classique**
-```
+``` PHP
 $bdd->exec('INSERT INTO jeux_video(nom, possesseur, console, prix, nbre_joueurs_max, commentaires) VALUES(\'Battlefield 1942\', \'Patrick\', \'PC\', 45, 50, \'2nde guerre mondiale\')');
 ```
 
 **Requête préparée**
-```
+``` PHP
 $req = $bdd->prepare('INSERT INTO jeux_video(nom, possesseur, console, prix, nbre_joueurs_max, commentaires) VALUES(:nom, :possesseur, :console, :prix, :nbre_joueurs_max, :commentaires)');
 $req->execute(array(
 	'nom' => $nom,
@@ -154,7 +154,7 @@ $req->execute(array(
 
 ## Les transactions :
 
-```
+``` PHP
 public bool **PDO::beginTransaction** ( void )
 ```
 Désactive le mode autocommit, c'est à dire que les modifications faites sur la BDD via PDO ne seront pas appliquées tant que l'on ne met pas la fin de la transaction avec commit();
@@ -196,7 +196,7 @@ Tables plus volumineuses, ne pas proposer d'index FULL-TEXT, légèrement plus l
 **Comment choisir son moteur ?**
 
 Lors de la création de la table, il faut mettre : 
-```
+``` PHP
 CREATE TABLE compte
 (
     -- liste des champs
@@ -206,7 +206,7 @@ ENGINE = InnoDB;
 
 **Faire une transaction en SQL:**
 
-```
+``` PHP
 -- on désactive l'autocommit, pour empêcher toutes les requêtes individuelles comme transaction.
 SET autocommit = 0;
 -- on lance la transaction
