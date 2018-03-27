@@ -271,7 +271,7 @@ intval() ou is_numeric() //Deux méthodes pour s'assurer du type.
 
 - Where (filtre) / order by (tri) / limit (limiations) : Affiner ses requêtes.
 
-## 5 - Mysqli ou PDO ? :
+## 6 - Mysqli ou PDO ? :
 
 Désavantages Mysqli :
 -  Ne supporte pas les requêtes préparées côtés clients
